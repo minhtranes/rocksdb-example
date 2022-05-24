@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.SerializationUtils;
 
@@ -15,9 +17,10 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
+@Configuration
 public class RocksDBRepository implements KVRepository<String, Object> {
-  private final static String FILE_NAME = "spring-boot-db";
-  File baseDir;
+  @Value("${rocksdb.dir}")
+  private File baseDir;
   RocksDB db;
 
   @PostConstruct // execute after the application starts.
@@ -25,7 +28,6 @@ public class RocksDBRepository implements KVRepository<String, Object> {
     RocksDB.loadLibrary();
     final Options options = new Options();
     options.setCreateIfMissing(true);
-    baseDir = new File("/tmp/rocks", FILE_NAME);
 
     try {
       Files.createDirectories(baseDir.getParentFile().toPath());

@@ -1,0 +1,2 @@
+rocksdb:
+  dir: C:\apps\rocksdb-example.git\rocksdb
