@@ -24,20 +24,17 @@ public class RocksDBRepository implements KVRepository<String, Object> {
   RocksDB db;
 
   @PostConstruct // execute after the application starts.
-  void initialize() {
+  void initialize() throws IOException, RocksDBException {
     RocksDB.loadLibrary();
     final Options options = new Options();
     options.setCreateIfMissing(true);
 
-    try {
+
       Files.createDirectories(baseDir.getParentFile().toPath());
       Files.createDirectories(baseDir.getAbsoluteFile().toPath());
       db = RocksDB.open(options, baseDir.getAbsolutePath());
+      log.info("RocksDB was initialized successfully");
 
-      log.info("RocksDB initialized");
-    } catch(IOException | RocksDBException e) {
-      log.error("Error initializng RocksDB. Exception: '{}', message: '{}'", e.getCause(), e.getMessage(), e);
-    }
   }
 
   @Override
