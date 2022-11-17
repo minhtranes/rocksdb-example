@@ -1,4 +1,4 @@
-package com.ukchukx.rocksdbexample.repository;
+package vn.ifa.study.repository;
 
 import java.util.Optional;
 
